@@ -1,5 +1,8 @@
 const User = require('../models/user');
 
+const eventEmitter = require('../util/event-emitter').getInstance();
+const userEvents = require('../listeners/user').events;
+
 exports.getAll = (where={}, projection={}) => {
   return User.find(where, projection).exec();
 };
@@ -14,7 +17,18 @@ exports.createOne = async (user) => {
     id: await _getNextIdValue()
   });
 
-  return newUser.save();
+  return new Promise((resolve, reject) => {
+    
+    newUser
+      .save()
+      .then(user => {
+        eventEmitter.emit(userEvents.USER_REGISTRATION, user);
+        resolve(user);
+      })
+      .catch(err => reject(err));
+  
+  });
+
 };
 
 const _getNextIdValue = async function() {

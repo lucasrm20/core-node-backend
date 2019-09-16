@@ -21,7 +21,9 @@ exports.createOne = (req, res, next) => {
   
   userService
     .createOne(req.body)
-    .then(users => res.json("Usuário Cadastrado com Sucesso."))
+    .then(users => {
+      res.json("Usuário Cadastrado com Sucesso.");
+    })
     .catch(err => next(err));
 
 };
