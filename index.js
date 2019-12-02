@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
 });
 
 // API Routes
-app.use(`${api}/users`, require('./routes/user'));
+app.use(`${api}/users`, require('./api/users/_index'));
 
 // Error Handlers
 app.use(errorHandlers.handler404);
